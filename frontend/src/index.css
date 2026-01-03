@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-github-border;
+  }
+  
+  body {
+    @apply text-github-text antialiased;
+    background: #0d1117;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(46, 160, 67, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, rgba(31, 111, 235, 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, rgba(46, 160, 67, 0.1) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-github-text;
+  }
+
+  a {
+    @apply text-github-text-link hover:underline;
+  }
+
+  input, textarea, select {
+    @apply bg-github-canvas-inset border-github-border text-github-text;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    @apply ring-2 ring-github-accent border-transparent outline-none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-github-canvas-subtle;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-github-border rounded-lg;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-github-border-muted;
+  }
+}
+
+@layer utilities {
+  .github-card {
+    @apply bg-github-canvas-subtle border border-github-border rounded-lg;
+  }
+
+  .github-button {
+    @apply px-4 py-2 rounded-md font-medium transition-all duration-200;
+  }
+
+  .github-button-primary {
+    @apply bg-github-success hover:bg-github-success/90 text-white;
+  }
+
+  .github-button-secondary {
+    @apply bg-github-canvas-subtle hover:bg-github-border-muted text-github-text border border-github-border;
+  }
+
+  .gradient-mesh {
+    background: linear-gradient(135deg, rgba(46, 160, 67, 0.05) 0%, rgba(31, 111, 235, 0.05) 100%);
+  }
+
+  .hero-glow {
+    position: relative;
+  }
+
+  .hero-glow::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(46, 160, 67, 0.15) 0%, transparent 70%);
+    animation: pulse-glow 8s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.1);
+    }
+  }
+}
+
+@layer base {
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    background-color: #0d1117;
+    color: #c9d1d9;
+  }
+}
