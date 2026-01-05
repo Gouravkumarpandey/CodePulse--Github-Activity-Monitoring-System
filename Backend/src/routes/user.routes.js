@@ -9,9 +9,23 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
-router.get('/profile', authMiddleware.verifyToken, userController.getUserProfile);
-router.get('/repositories', authMiddleware.verifyToken, userController.getUserRepositories);
-router.get('/activity/:repoId', authMiddleware.verifyToken, userController.getRepositoryActivity);
-router.get('/dashboard', authMiddleware.verifyToken, userController.getDashboardSummary);
+// All user routes require authentication
+router.use(authMiddleware.verifyToken);
+
+// User profile
+router.get('/profile', userController.getUserProfile);
+
+// Repository management
+router.get('/repositories', userController.getUserRepositories);
+router.get('/active-repository', userController.getActiveRepository);
+router.post('/active-repository', userController.setActiveRepository);
+
+// Activity and monitoring
+router.get('/activity/:repoId', userController.getRepositoryActivity);
+router.get('/warnings', userController.getWarningsAndViolations);
+router.get('/dashboard', userController.getDashboardSummary);
+
+// Rules (read-only)
+router.get('/rules', userController.getAdminRules);
 
 module.exports = router;

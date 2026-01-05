@@ -1,12 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Github, Loader2, CheckCircle2, XCircle } from 'lucide-react';
-import { handleGithubCallback } from '../utils/github-auth';
+import { authService } from '../services/auth.service';
+import { AuthContext } from '../context/AuthContext';
 
 export default function GitHubCallbackPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('Authenticating with GitHub...');
 
@@ -29,28 +31,46 @@ export default function GitHubCallbackPage() {
     }
 
     const authenticate = async () => {
-      const result = await handleGithubCallback(code);
-      
-      if (result.success) {
-        setStatus('success');
-        setMessage('Successfully authenticated! Redirecting...');
-        setTimeout(() => navigate('/repo-selection'), 1500);
-      } else {
+      try {
+        setMessage('Exchanging code for access token...');
+        
+        // Exchange code for GitHub token via backend
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/github/callback?code=${code}`, {
+          method: 'POST',
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to authenticate with GitHub');
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          // Login with the received user and token
+          login(data.data.user, data.data.token);
+          
+          setStatus('success');
+          setMessage('Successfully authenticated! Redirecting...');
+          setTimeout(() => navigate('/repo-selection'), 1500);
+        } else {
+          throw new Error(data.message || 'Authentication failed');
+        }
+      } catch (err: any) {
         setStatus('error');
-        setMessage(result.error || 'Authentication failed');
+        setMessage(err.message || 'Authentication failed');
         setTimeout(() => navigate('/login'), 3000);
       }
     };
 
     authenticate();
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, login]);
 
   return (
-    <div className="min-h-screen bg-github-bg flex items-center justify-center p-4">
+    <div className="min-h-screen bg-github-bg dark:bg-github-canvas-subtle flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-github-canvas-subtle border border-github-border rounded-lg p-12 max-w-md w-full text-center"
+        className="bg-github-canvas-subtle dark:bg-github-canvas-inset border border-github-border rounded-lg p-12 max-w-md w-full text-center"
       >
         <div className="mb-6">
           {status === 'loading' && (

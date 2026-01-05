@@ -4,11 +4,16 @@
 
 @layer base {
   * {
-    @apply border-github-border;
+    @apply border-gray-200 dark:border-github-border;
   }
   
   body {
-    @apply text-github-text antialiased;
+    @apply antialiased;
+    @apply bg-gray-50 text-gray-900;
+    @apply dark:text-github-text;
+  }
+
+  .dark body {
     background: #0d1117;
     background-image: 
       radial-gradient(at 0% 0%, rgba(46, 160, 67, 0.15) 0px, transparent 50%),
@@ -19,19 +24,21 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply text-github-text;
+    @apply text-gray-900 dark:text-github-text;
   }
 
   a {
-    @apply text-github-text-link hover:underline;
+    @apply text-indigo-600 hover:underline dark:text-github-text-link;
   }
 
   input, textarea, select {
-    @apply bg-github-canvas-inset border-github-border text-github-text;
+    @apply bg-white border-gray-300 text-gray-900;
+    @apply dark:bg-github-canvas-inset dark:border-github-border dark:text-github-text;
   }
 
   input:focus, textarea:focus, select:focus {
-    @apply ring-2 ring-github-accent border-transparent outline-none;
+    @apply ring-2 ring-indigo-500 border-transparent outline-none;
+    @apply dark:ring-github-accent;
   }
 
   ::-webkit-scrollbar {
@@ -40,21 +47,21 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-github-canvas-subtle;
+    @apply bg-gray-100 dark:bg-github-canvas-subtle;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-github-border rounded-lg;
+    @apply bg-gray-300 dark:bg-github-border rounded-lg;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-github-border-muted;
+    @apply bg-gray-400 dark:bg-github-border-muted;
   }
 }
 
 @layer utilities {
   .github-card {
-    @apply bg-github-canvas-subtle border border-github-border rounded-lg;
+    @apply bg-white dark:bg-github-canvas-subtle border border-gray-200 dark:border-github-border rounded-lg;
   }
 
   .github-button {
@@ -62,11 +69,11 @@
   }
 
   .github-button-primary {
-    @apply bg-github-success hover:bg-github-success/90 text-white;
+    @apply bg-indigo-600 hover:bg-indigo-700 dark:bg-github-success dark:hover:bg-github-success/90 text-white;
   }
 
   .github-button-secondary {
-    @apply bg-github-canvas-subtle hover:bg-github-border-muted text-github-text border border-github-border;
+    @apply bg-gray-100 hover:bg-gray-200 dark:bg-github-canvas-subtle dark:hover:bg-github-border-muted text-gray-900 dark:text-github-text border border-gray-300 dark:border-github-border;
   }
 
   .gradient-mesh {
@@ -104,7 +111,5 @@
 @layer base {
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-    background-color: #0d1117;
-    color: #c9d1d9;
   }
 }

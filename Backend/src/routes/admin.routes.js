@@ -14,9 +14,22 @@ const router = express.Router();
 router.use(authMiddleware.verifyToken);
 router.use(roleMiddleware.requireAdmin);
 
+// Settings
 router.get('/settings', adminController.getAdminSettings);
 router.put('/settings', adminController.updateAdminSettings);
+
+// User Management
 router.get('/users', adminController.getAllUsers);
+router.get('/users/:userId', adminController.getUserDetail);
+
+// Activity Monitoring
+router.get('/activity-monitoring', adminController.getUserActivityMonitoring);
 router.get('/violations', adminController.getActivityViolations);
+
+// Admin Actions
+router.post('/actions/warning', adminController.issueWarning);
+router.post('/actions/observation', adminController.setObservation);
+router.post('/actions/disqualify', adminController.disqualifyUser);
+router.post('/actions/reactivate', adminController.reactivateUser);
 
 module.exports = router;
